@@ -33,19 +33,18 @@ pipeline {
       }
     }
 
-    stage('Deploy') {
+    stage('QA') {
       parallel {
-        stage('QA Deploy') {
+        stage('Deploy') {
           steps {
             sh './mvnw spring-boot:run </dev/null &>/dev/null &'
-            junit '**/target/surefire-reports/'
-            perfReport '**/target/jmeter/results/*'
           }
         }
 
         stage('Integration & Performance tests') {
           steps {
             sh './mvnw verify'
+            junit '**/target/surefire-reports/'
           }
         }
 
